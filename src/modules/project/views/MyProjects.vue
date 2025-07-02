@@ -4,8 +4,13 @@
         Carregando
     </div>
     
-    <div v-else-if="projectStore.projects.length > 0">
-        <ProjectList :projects="projectStore.projects" />
+    <div v-else-if="projectStore.projects.length > 0" class="flex items-center justify-center mt-50 mb-50">
+        <div class="bg-black text-white justify-center border border-white w-140">
+            <h1 class="font-bold text-center text-4xl">Projects</h1>
+
+            <ProjectList :projects="projectStore.projects" />
+        </div>
+        
     </div>
 
     <div v-else>

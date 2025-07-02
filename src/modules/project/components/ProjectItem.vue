@@ -1,6 +1,6 @@
 <template>
 
-    <li>{{ project.description }}</li>
+    <li class="border p-2">{{ project.description }}</li>
 
 </template>
 

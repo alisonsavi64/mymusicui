@@ -1,5 +1,9 @@
-import http from '@/services/http';
+import http from "@/core/http"
+import type { projectType } from "./types";
 
-export function getAll(){
-    return http.get('/projects');
+export const projectsApi = {
+    async getAll(): Promise<projectType[]>{
+        const response = await http.get('/projects')
+        return response.data; 
+    }
 }

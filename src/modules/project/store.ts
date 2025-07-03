@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { projectsApi } from './api';
+import projectsApi from './api';
 import type { projectType } from './types';
 
 export const useProjectsStore = defineStore('projects', {

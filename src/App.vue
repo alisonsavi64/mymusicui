@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import MyProjects from './modules/project/views/MyProjects.vue';
 </script>
 
 <template>
-    <MyProjects></MyProjects>
+    <router-view></router-view>
 </template>
 
 <style scoped>

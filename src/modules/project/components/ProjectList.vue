@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
     import type { projectType } from '../types';
-import ProjectItem from './ProjectItem.vue';
+    import ProjectItem from './ProjectItem.vue';
     defineProps<{
         projects: projectType[]
     }>();

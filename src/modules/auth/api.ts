@@ -1,8 +1,9 @@
+import http from "@/core/http";
 import type { User } from "./types";
 
 const authApi = {
     async login(email: string, password: string){
-
+        return await http.post('/auth/login', {email, password})
     }
 }
 

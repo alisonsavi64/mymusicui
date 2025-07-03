@@ -3,11 +3,13 @@ import MyProjects from '../modules/project/views/MyProjects.vue';
 import authRoutes from '@/modules/auth/routes';
 import projectRoutes from '@/modules/project/routes';
 import { useAuthStore } from '@/modules/auth/store';
+import timelineRoutes from '@/modules/timeline/routest';
 
 
 const routes = [
   ...authRoutes,
-  ...projectRoutes
+  ...projectRoutes,
+  ...timelineRoutes
 ]
 
 const router = createRouter({

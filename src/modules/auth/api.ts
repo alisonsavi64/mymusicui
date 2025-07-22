@@ -15,4 +15,4 @@ const authApiMemory = {
     }
 }
 
-export default authApiMemory;
+export default authApi;

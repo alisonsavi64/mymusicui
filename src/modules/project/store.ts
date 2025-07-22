@@ -12,7 +12,6 @@ export const useProjectsStore = defineStore('projects', {
             this.loading = true;
             try{
                 this.projects = await projectsApi.getAll();
-                console.log(this.projects);
             } catch(e){
 
             } finally{

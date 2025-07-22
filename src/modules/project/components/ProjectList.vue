@@ -10,4 +10,4 @@
     defineProps<{
         projects: projectType[]
     }>();
-</script>
+</script>   

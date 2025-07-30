@@ -9,7 +9,6 @@
             <h1 class="font-bold text-center text-4xl">Projects</h1>            
             <ProjectList :projects="projectStore.projects" />
         </div>
-        
     </div>
 
     <div v-else>

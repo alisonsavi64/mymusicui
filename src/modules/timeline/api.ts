@@ -10,7 +10,8 @@ const timelineApiMemory = {
                     final_track: '00:30',
                     start_audio: '01:00',
                     final_audio: '01:10',
-                    audio_id: 1
+                    audio_id: 1,
+                    sequence: 1
                 },
                 {
                     track_id: 2,
@@ -18,7 +19,8 @@ const timelineApiMemory = {
                     final_track: '00:35',
                     start_audio: '01:10',
                     final_audio: '01:15',
-                    audio_id: 2
+                    audio_id: 2,
+                    sequence: 2
                 },
             ],
             audios: [

@@ -4,7 +4,7 @@ import type { TimeLine } from "./types";
 
 export const useTimelineStore = defineStore('timeline', {
     state: () => ({
-        timeline: {} as any, 
+        timeline: {} as TimeLine, 
         loading: false 
     }),
     actions: {

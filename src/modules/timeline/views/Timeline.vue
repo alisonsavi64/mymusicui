@@ -62,6 +62,10 @@ let analyser: AnalyserNode;
 let source: MediaStreamAudioSourceNode;
 let dataArray: Uint8Array;
 let interval: number | null;
+let _stream: MediaStream;
+let audioChunks: BlobPart[] = [];
+let mediaRecorder: MediaRecorder | null = null;
+
 
 function handleClick(event: MouseEvent, trackSequence: number){
     if(isRecording.value) return;
@@ -70,11 +74,9 @@ function handleClick(event: MouseEvent, trackSequence: number){
     xPlayer.value = x;
     xPlayerLastClick.value = x;
     trackSelected.value = trackSequence;
-
     const seconds = x / pixelsPerSecond;
     console.log(`Clicked at time: ${seconds.toFixed(2)}s`);
 }
-
 
 function stopRecording(event: MouseEvent){
     if(isRecording.value){
@@ -83,11 +85,34 @@ function stopRecording(event: MouseEvent){
         isRecording.value = false;
         console.log(`Start: ${xPlayerLastClick.value! / pixelsPerSecond}`)
         console.log(`End: ${xPlayer.value! / pixelsPerSecond}`)
-        // for(const track of timelineStore.timeline.tracks){
-            // track.clips.push({
-        // 
-            // });
-        // }
+        for(const track of timelineStore.timeline.tracks){
+            if(track.sequence === trackSelected.value) track.clips.push({
+                audio_id: undefined,
+                id: undefined,
+                start_audio: xPlayerLastClick.value!,
+                final_audio: xPlayer.value!,
+                start_track: xPlayerLastClick.value!,
+                final_track: xPlayer.value!,
+                track_id: track.id
+            })
+        }
+        console.log(timelineStore.timeline.tracks);
+
+        if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+            mediaRecorder.stop();
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+                const audioUrl = URL.createObjectURL(audioBlob);
+                console.log(audioUrl);
+
+                const audio = new Audio(audioUrl);
+
+                audio.play();
+            }
+        }
+
+        _stream.getTracks().forEach(track => track.stop());
+
         return;
     } 
 }
@@ -96,23 +121,37 @@ function startRecording(event: MouseEvent){
     if(isRecording.value) return;
     isRecording.value = true;
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        _stream = stream;
         audioContext = new AudioContext();
         analyser = audioContext.createAnalyser();
-        source = audioContext.createMediaStreamSource(stream);
+        source = audioContext.createMediaStreamSource(_stream);
         source.connect(analyser);
         analyser.fftSize = 64;
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
-
         interval = window.setInterval(() => {
-
             analyser.getByteFrequencyData(dataArray);
             const avg = dataArray.slice(0, 20).reduce((a, b) => a + b, 0) / 20;
             const normalized = (avg / 255) * 80;
             barHistory.value.push(normalized);        
             xPlayer.value! += barSpacing;
         }, 1000 / pixelsPerSecond);
+        mediaRecorder = new MediaRecorder(_stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        }
+
+        mediaRecorder.start();
     });
 }
+
+function secondsToHHMMSS(totalSeconds: number): string {
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const seconds = String(totalSeconds % 60).padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 
 </script>
